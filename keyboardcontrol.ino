@@ -169,22 +169,22 @@ void setPositionHelper(double x, double y, double z, double phi) {
 void keyboardControl() {
   if (Serial.available()) { // if serial value is available 
     val = Serial.read(); // then read the serial value
-    if (val == 'd') { // if value input is equals to d 
+    if (val == 'd') { // pitch EE out
       y_++;
       setPosition(x_, y_, z_, phi);
       delay(10);
     }
-    if (val == 'a'){ // if value input is equals to d
+    if (val == 'a'){ // pitch EE in
       y_--;
       setPosition(x_, y_, z_, phi);
       delay(10);
     }
-    if (val == 'w') { // if value input is equals to d 
+    if (val == 'w') { // pitch EE up
       z_++;
       setPosition(x_, y_, z_, phi);
       delay(10);
     }
-    if (val == 's'){ // if value input is equals to d
+    if (val == 's'){ // pitch EE down
       z_--;
       setPosition(x_, y_, z_, phi);
       delay(10);
