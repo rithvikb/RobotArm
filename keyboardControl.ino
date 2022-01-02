@@ -117,7 +117,7 @@ void setPosition(double x, double y, double z, double gripAngle) {
   }
   
   // if no grip angle achieves a possible orientation, return 
-  if (isnan(t1)) {
+  if (isnan(t1) || isnan(t2) || isnan(t3)) {
     Serial.println("unreachable position");
     return;
   }
