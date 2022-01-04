@@ -33,7 +33,7 @@ void setup() {
   servoClaw.attach(servoPin6);
 
 
-  servoBase.write(150); //Towards 0 is clockwise, towards 180 ccw
+  servoBase.write(180); //Towards 0 is clockwise, towards 180 ccw
   servoElbowLower.write(50); //0 is fully down, 50 is fully up
   servoElbowUpper.write(140); //140 is flat, 180 is fully down, anything less than 140 is up
   servoWrist.write(140); //140 is middle, 40 degrees swinging

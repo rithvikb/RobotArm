@@ -1,0 +1,9 @@
+Robot controller
+servoBase	controls base	3	SLIDER	x	0	1.0	0.1
+servoElbowLower	controls lower elbow	3	SLIDER	y	0	1.0	0.1
+servoWrist	controls wrist	3	SLIDER	z	0	1.0	0.1
+servoClawJoint	controls up/down for claw	3	SLIDER	rz	0	1.0	0.1
+servoClawOpen	opens claw	1	BUTTON	6	0	0.0	0.0
+servoClawClose	closes claw	1	BUTTON	7	0	0.0	0.0
+servoElbowUpperUp	moves upper elbow up	1	BUTTON	4	0	0.0	0.0
+servoElbowUpperDown	moves upper elbow down	1	BUTTON	0	0	0.0	0.0
