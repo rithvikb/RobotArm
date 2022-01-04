@@ -191,3 +191,14 @@ void keyboardControl() {
     }
   }
 }
+
+void flipOrientation() {
+  if (t2 >= 0) {
+    t1 = t1 + t2;
+    t2 = -1 * t2;
+  } 
+  Serial.println(degrees(t1));
+  Serial.println(degrees(t2));
+  servoShoulder.write(degrees(t1)); 
+  servoElbow.write(90 - degrees(t2)); 
+} 
