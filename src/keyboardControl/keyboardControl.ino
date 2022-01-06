@@ -88,7 +88,7 @@ void setPosition(double x, double y, double z, double gripAngle) {
   float wy = y_ - c3 * cos(radians(phi));
   float wz = z_ - c3 * sin(radians(phi)) - c0;
 
-  // shoulder-elbow angle
+  // shoulder-elbow anglef
   float delta = sq(wy) + sq(wz);
   float a2 = (delta - sq(c1) - sq(c2)) / (2 * c1 * c2);
   float s2 = sqrt(1 - sq(a2)); // elbow down
@@ -102,12 +102,16 @@ void setPosition(double x, double y, double z, double gripAngle) {
   // wrist angle
   t3 = radians(phi) - t1 - t2;
 
-  // if angles return as "nan", find new grip angle phi
-  if (isnan(t1)) {
+  // if angles return as "nan" or angles are unreachable, find new grip angle phi
+  if (isnan(t1) || degrees(t1) < 0
+      || degrees(t1) > 180 || degrees(t2) < -90 || degrees(t2) > 90
+      || degrees(t3) < -90 || degrees(t3) > 90) {
     for (float j = 0; j <= 180; j++) {
       phi_h = j;
       setPositionHelper(x_, y_, z_, phi_h);
-      if (isnan(t1) || isnan(t2) || isnan(t3)) {
+      if (isnan(t1) || isnan(t2) || isnan(t3) || degrees(t1) < 0
+          || degrees(t1) > 180 || degrees(t2) < -90 || degrees(t2) > 90
+          || degrees(t3) < -90 || degrees(t3) > 90) {
         continue;
       } else {
         phi = phi_h;
@@ -121,12 +125,20 @@ void setPosition(double x, double y, double z, double gripAngle) {
     Serial.println("unreachable position");
     return;
   }
+
+  flipOrientation();
   
+  Serial.println("");
   Serial.println("Angle Calculations: ");
-  Serial.println(degrees(t0));
-  Serial.println(degrees(t1));
-  Serial.println(degrees(t2));
-  Serial.println(degrees(t3));
+  Serial.print("t0: "); Serial.print(degrees(t0));
+  Serial.println("");
+  Serial.print("t1: "); Serial.print(degrees(t1));
+  Serial.println("");
+  Serial.print("t2: "); Serial.print(degrees(t2));
+  Serial.println("");
+  Serial.print("t3: "); Serial.print(degrees(t3));
+  Serial.println("");
+  Serial.print("phi: "); Serial.print(phi);
   
   servoBase.write(degrees(t0));
   servoShoulder.write(degrees(t1)); 
@@ -157,7 +169,7 @@ void setPositionHelper(double x, double y, double z, double phi) {
   float s1 = ((c1 + c2 * a2) * wz - c2 * s2 * wy) / delta;
   float a1 = ((c1 + c2 * a2) * wy + c2 * s2 * wz) / delta;
   t1 = atan2(s1,a1);
-
+  
   // wrist angle
   t3 = radians(phi) - t1 - t2;
 }
@@ -189,16 +201,19 @@ void keyboardControl() {
       setPosition(x_, y_, z_, phi);
       delay(10);
     }
+    if (val == 'f'){ // pitch EE down
+      flipOrientation();
+      delay(10);
+    }
   }
 }
 
 void flipOrientation() {
-  if (t2 >= 0) {
+  if (t2 >= 0 || t2 < -90) {
     t1 = t1 + t2;
     t2 = -1 * t2;
   } 
-  Serial.println(degrees(t1));
-  Serial.println(degrees(t2));
+
   servoShoulder.write(degrees(t1)); 
   servoElbow.write(90 - degrees(t2)); 
 } 
